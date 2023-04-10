@@ -9,8 +9,8 @@
 template <typename T>
 T MessageQueue<T>::receive()
 {
-    std::unique_lock<std::mutex> receiveLock(_mutex);
-    _condition.wait(receiveLock, [this] { return !_queue.empty(); });
+    std::unique_lock<std::mutex> lock(_mutex);
+    _condition.wait(lock, [this] { return !_queue.empty(); });
     T message = std::move(_queue.front());
     _queue.pop_front();
 
@@ -41,8 +41,7 @@ void TrafficLight::waitForGreen()
 {
     while (true)
     {
-        TrafficLightPhase lightPhase = _messageQueue.receive();
-        if (lightPhase == TrafficLightPhase::green)
+        if (_messageQueue.receive() == TrafficLightPhase::green)
         {
             return;
         }
