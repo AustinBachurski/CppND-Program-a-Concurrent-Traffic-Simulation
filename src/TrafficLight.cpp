@@ -69,7 +69,7 @@ void TrafficLight::cycleThroughPhases()
     {
         size_t timeSinceUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now() - previousUpdate).count();
-        
+            
         if (timeSinceUpdate > cycleTime)
         {
             switch(_currentPhase)
