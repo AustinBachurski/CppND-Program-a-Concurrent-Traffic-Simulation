@@ -12,7 +12,7 @@ T MessageQueue<T>::receive()
     std::unique_lock<std::mutex> lock(_mutex);
     _condition.wait(lock, [this] {return !_queue.empty();});
     T message = std::move(_queue.front());
-    _queue.pop_front()
+    _queue.pop_front();
 
     return message;
 }
@@ -51,9 +51,9 @@ TrafficLightPhase TrafficLight::getCurrentPhase()
     return _currentPhase;
 }
 
-void TrafficLight::simulate() override
+void TrafficLight::simulate()
 {
-    threads.emplace_back(std::thread(cycleThroughPhases, this));
+    threads.emplace_back(std::thread(&TrafficLight::cycleThroughPhases, this));
 }
 
 // virtual function which is executed in a thread
@@ -87,6 +87,6 @@ void TrafficLight::cycleThroughPhases()
 int TrafficLight::GetRandomNumberInRange(int lowerBound, int upperBound)
 {
     std::mt19937 randomize{ std::random_device{}() };
-    std::uniform_int_distribution number{ lowerBound, upperBound};
+    std::uniform_int_distribution<> number{ lowerBound, upperBound};
     return number(randomize);
 }

@@ -14,7 +14,7 @@ enum class TrafficLightPhase
 {
     red,
     green,
-}
+};
 
 /******************************************************************************
  *  Message Queue Class */
@@ -23,7 +23,7 @@ template <class T>
 class MessageQueue
 {
 public:
-    TrafficLightPhase receive();
+    T receive();
     void send(T&& phase);
 
 private:
@@ -43,7 +43,7 @@ public:
     TrafficLight();
 
     void waitForGreen();
-    void simulate() override;
+    void simulate();
     TrafficLightPhase getCurrentPhase();
 
 
