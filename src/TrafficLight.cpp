@@ -10,7 +10,7 @@ template <typename T>
 T MessageQueue<T>::receive()
 {
     std::unique_lock<std::mutex> lock(_mutex);
-    _condition.wait(lock, [this] {return !_queue.empty();});
+    _condition.wait(lock);
     T message = std::move(_queue.front());
     _queue.pop_front();
 
@@ -29,8 +29,12 @@ void MessageQueue<T>::send(T &&msg)
 /******************************************************************************
  *  Traffic Light Class */
 
-TrafficLight::TrafficLight() :
-_currentPhase { TrafficLightPhase::red }
+TrafficLight::TrafficLight()
+{
+    _currentPhase = TrafficLightPhase::red;
+}
+
+TrafficLight::~TrafficLight()
 {}
 
 void TrafficLight::waitForGreen()
@@ -77,7 +81,7 @@ void TrafficLight::cycleThroughPhases()
                 break;
             }
             _messageQueue.send(std::move(_currentPhase));
-            cycleTime = 4000 + std::rand() % 6000;
+            cycleTime = GetRandomNumberInRange(4000, 6000);
             previousUpdate = std::chrono::system_clock::now();
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1));

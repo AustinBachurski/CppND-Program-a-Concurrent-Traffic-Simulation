@@ -41,7 +41,7 @@ class TrafficLight : public TrafficObject
 {
 public:
     TrafficLight();
-
+    ~TrafficLight();
     void waitForGreen();
     void simulate();
     TrafficLightPhase getCurrentPhase();
