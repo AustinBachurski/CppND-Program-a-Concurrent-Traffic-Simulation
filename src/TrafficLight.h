@@ -29,7 +29,7 @@ public:
 private:
     std::condition_variable _condition;
     std::deque<T> _queue;
-    std::mutex _mutex;
+    std::mutex _queueMutex;
 };
 
 
