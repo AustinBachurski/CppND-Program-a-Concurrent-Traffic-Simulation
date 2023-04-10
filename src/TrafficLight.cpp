@@ -13,7 +13,7 @@ T MessageQueue<T>::receive()
     _condition.wait(lock, [this] { return !_queue.empty(); });
     T message = std::move(_queue.front());
     _queue.pop_front();
-
+    
     return message;
 }
 
@@ -69,7 +69,7 @@ void TrafficLight::cycleThroughPhases()
     {
         size_t timeSinceUpdate = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now() - previousUpdate).count();
-            
+
         if (timeSinceUpdate > cycleTime)
         {
             switch(_currentPhase)
