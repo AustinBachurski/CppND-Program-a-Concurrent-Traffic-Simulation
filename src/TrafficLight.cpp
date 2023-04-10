@@ -10,7 +10,7 @@ template <typename T>
 T MessageQueue<T>::receive()
 {
     std::unique_lock<std::mutex> receiveLock(_queueMutex);
-    _condition.wait(lock);
+    _condition.wait(receiveLock);
     T message = std::move(_queue.front());
     _queue.pop_front();
 
