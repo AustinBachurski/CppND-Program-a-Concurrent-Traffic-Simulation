@@ -9,8 +9,8 @@
 template <typename T>
 T MessageQueue<T>::receive()
 {
-    std::unique_lock<std::mutex> receiveLock(_queueMutex);
-    _condition.wait(receiveLock);
+    std::unique_lock<std::mutex> receiveLock(_mutex);
+    _condition.wait(receiveLock, [this] { return !_queue.empty(); });
     T message = std::move(_queue.front());
     _queue.pop_front();
 
@@ -20,7 +20,7 @@ T MessageQueue<T>::receive()
 template <typename T>
 void MessageQueue<T>::send(T &&msg)
 {
-    std::lock_guard<std::mutex> sendLock (_queueMutex);
+    std::lock_guard<std::mutex> lock (_mutex);
     _queue.emplace_back(msg);
     _condition.notify_one();
 }
